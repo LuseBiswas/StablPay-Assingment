@@ -5,7 +5,7 @@ import OrderHistory from "../components/OrderHistory";
 import OrderBreakdown from "../components/OrderBreakdown";
 import RewardsActions from "../components/RewardsActions";
 
-function Dashboard() {
+function Dashboard({ darkMode, setDarkMode }) {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedPage, setSelectedPage] = useState("Dashboard");
@@ -17,7 +17,6 @@ function Dashboard() {
     }
   }, []);
 
-  // Save orders to Local Storage whenever they change
   useEffect(() => {
     if (orders.length > 0) {
       localStorage.setItem("orders", JSON.stringify(orders));
@@ -30,9 +29,9 @@ function Dashboard() {
   };
 
   const clearOrderHistory = () => {
-    localStorage.removeItem("orders"); // Remove orders from Local Storage
-    setOrders([]); // Clear state
-    setSelectedOrder(null); // Reset selected order
+    localStorage.removeItem("orders");
+    setOrders([]);
+    setSelectedOrder(null);
   };
 
   const handleUpdateStatus = (index, newStatus) => {
@@ -43,16 +42,22 @@ function Dashboard() {
   };
 
   return (
-    <div className="p-5 space-y-5">
-      <h1 className="text-2xl font-bold">{selectedPage}</h1>
-      <RewardsActions />
-      <OrderForm onOrderSubmit={handleNewOrder} />
-      <OrderBreakdown order={selectedOrder} />
-      <RecentOrders orders={orders} onUpdateStatus={handleUpdateStatus} />
-      <OrderHistory orders={orders} />
+    <div className={`p-5 space-y-5 transition-all ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">{selectedPage}</h1>
+      </div>
+
+      <RewardsActions darkMode={darkMode} />
+      <OrderForm onOrderSubmit={handleNewOrder} darkMode={darkMode} />
+      <OrderBreakdown order={selectedOrder} darkMode={darkMode} />
+      <RecentOrders orders={orders} onUpdateStatus={handleUpdateStatus} darkMode={darkMode} />
+      <OrderHistory orders={orders} darkMode={darkMode} />
+
       <button
         onClick={clearOrderHistory}
-        className="bg-red-500 text-white px-4 py-2 rounded"
+        className={`px-4 py-2 rounded transition-all ${
+          darkMode ? "bg-red-600 text-white hover:bg-red-700" : "bg-red-500 text-white hover:bg-red-600"
+        }`}
       >
         Clear Order History
       </button>
