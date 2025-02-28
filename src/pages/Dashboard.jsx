@@ -8,20 +8,26 @@ import RewardsActions from "../components/RewardsActions";
 function Dashboard() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedPage, setSelectedPage] = useState("Dashboard"); // ✅ Added this
+  const [selectedPage, setSelectedPage] = useState("Dashboard"); 
 
   const handleNewOrder = (newOrder) => {
     setOrders([...orders, newOrder]);
     setSelectedOrder(newOrder);
   };
+  const handleUpdateStatus = (index, newStatus) => {
+    const updatedOrders = orders.map((order, i) =>
+      i === index ? { ...order, status: newStatus } : order
+    );
+    setOrders(updatedOrders);
+  };
 
   return (
     <div className="p-5 space-y-5">
-      <h1 className="text-2xl font-bold">{selectedPage}</h1> {/* ✅ No error now */}
+      <h1 className="text-2xl font-bold">{selectedPage}</h1> 
       <RewardsActions />
       <OrderForm onOrderSubmit={handleNewOrder} />
       <OrderBreakdown order={selectedOrder} />
-      <RecentOrders orders={orders} />
+      <RecentOrders orders={orders} onUpdateStatus={handleUpdateStatus} />
       <OrderHistory orders={orders} />
     </div>
   );
