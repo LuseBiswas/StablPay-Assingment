@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Home, Star, ClipboardList, Settings, LogOut, Sun, Moon, Menu, X } from "lucide-react";
 
 function Sidebar({ darkMode, setDarkMode }) {
   const [active, setActive] = useState("Home");
   const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   const menuItems = [
     { name: "Home", icon: <Home size={20} /> },
@@ -11,6 +12,28 @@ function Sidebar({ darkMode, setDarkMode }) {
     { name: "Orders", icon: <ClipboardList size={20} /> },
     { name: "Settings", icon: <Settings size={20} /> },
   ];
+
+  // Add effect to handle clicks outside sidebar
+  useEffect(() => {
+    function handleClickOutside(event) {
+      // Only close if sidebar is open and on mobile view (md:hidden is active)
+      if (
+        isOpen && 
+        sidebarRef.current && 
+        !sidebarRef.current.contains(event.target) &&
+        window.innerWidth < 768 // md breakpoint
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <div>
@@ -24,6 +47,7 @@ function Sidebar({ darkMode, setDarkMode }) {
 
       {/* Sidebar */}
       <div
+        ref={sidebarRef}
         className={`fixed md:static w-64 min-h-screen flex flex-col justify-between transition-all z-50 
         ${darkMode ? "bg-gray-900 text-white" : "bg-white"} 
         ${isOpen ? "left-0" : "-left-64"} md:left-0 top-0 md:flex`}
@@ -67,6 +91,14 @@ function Sidebar({ darkMode, setDarkMode }) {
           </div>
         </div>
       </div>
+
+      {/* Optional: Add overlay for better mobile experience */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 }
