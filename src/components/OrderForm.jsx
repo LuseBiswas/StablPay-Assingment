@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 
-function OrderForm({ onOrderSubmit }) {
+function OrderForm({ onOrderSubmit, darkMode }) {
   const [formData, setFormData] = useState({
     customerName: "",
     address: "",
     distance: "",
-    restaurant: "", // New field for restaurant selection
+    restaurant: "",
   });
 
   const [errors, setErrors] = useState({});
-
   const restaurants = ["Pizza Hut", "KFC", "McDonald's", "Subway", "Domino's"];
 
   const handleChange = (e) => {
@@ -46,12 +45,11 @@ function OrderForm({ onOrderSubmit }) {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     const estimatedTime = calculateDeliveryTime(formData.distance);
@@ -67,7 +65,9 @@ function OrderForm({ onOrderSubmit }) {
   };
 
   return (
-    <div className="p-5 bg-white shadow rounded-lg">
+    <div className={`p-5 shadow rounded-lg transition-all ${
+      darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
+    }`}>
       <h2 className="text-xl font-bold mb-3">Place an Order</h2>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
@@ -77,11 +77,11 @@ function OrderForm({ onOrderSubmit }) {
             placeholder="Customer Name"
             value={formData.customerName}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-white text-black border-gray-300"
+            }`}
           />
-          {errors.customerName && (
-            <p className="text-red-500 text-sm">{errors.customerName}</p>
-          )}
+          {errors.customerName && <p className="text-red-500 text-sm">{errors.customerName}</p>}
         </div>
 
         <div>
@@ -91,11 +91,11 @@ function OrderForm({ onOrderSubmit }) {
             placeholder="Delivery Address"
             value={formData.address}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-white text-black border-gray-300"
+            }`}
           />
-          {errors.address && (
-            <p className="text-red-500 text-sm">{errors.address}</p>
-          )}
+          {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
         </div>
 
         <div>
@@ -105,11 +105,11 @@ function OrderForm({ onOrderSubmit }) {
             placeholder="Distance (km)"
             value={formData.distance}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-white text-black border-gray-300"
+            }`}
           />
-          {errors.distance && (
-            <p className="text-red-500 text-sm">{errors.distance}</p>
-          )}
+          {errors.distance && <p className="text-red-500 text-sm">{errors.distance}</p>}
         </div>
 
         <div>
@@ -117,7 +117,9 @@ function OrderForm({ onOrderSubmit }) {
             name="restaurant"
             value={formData.restaurant}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-white text-black border-gray-300"
+            }`}
           >
             <option value="">Select a Restaurant</option>
             {restaurants.map((restaurant, index) => (
@@ -126,14 +128,14 @@ function OrderForm({ onOrderSubmit }) {
               </option>
             ))}
           </select>
-          {errors.restaurant && (
-            <p className="text-red-500 text-sm">{errors.restaurant}</p>
-          )}
+          {errors.restaurant && <p className="text-red-500 text-sm">{errors.restaurant}</p>}
         </div>
 
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+          className={`px-4 py-2 rounded w-full transition-all ${
+            darkMode ? "bg-blue-500 hover:bg-blue-600 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
         >
           Place Order
         </button>
