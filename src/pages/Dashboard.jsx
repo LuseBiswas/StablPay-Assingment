@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OrderForm from "../components/OrderForm";
 import RecentOrders from "../components/RecentOrders";
 import OrderHistory from "../components/OrderHistory";
@@ -10,10 +10,25 @@ function Dashboard() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedPage, setSelectedPage] = useState("Dashboard"); 
 
+  useEffect(() => {
+    const savedOrders = JSON.parse(localStorage.getItem("orders"));
+    if (savedOrders) {
+      setOrders(savedOrders);
+    }
+  }, []);
+
+  // Save orders to Local Storage whenever they change
+  useEffect(() => {
+    if (orders.length > 0) {
+      localStorage.setItem("orders", JSON.stringify(orders));
+    }
+  }, [orders]);
+
   const handleNewOrder = (newOrder) => {
     setOrders([...orders, newOrder]);
     setSelectedOrder(newOrder);
   };
+  
   const handleUpdateStatus = (index, newStatus) => {
     const updatedOrders = orders.map((order, i) =>
       i === index ? { ...order, status: newStatus } : order
