@@ -18,7 +18,7 @@ function Dashboard() {
       <OrderForm onOrderSubmit={handleNewOrder} />
       <OrderBreakdown order={selectedOrder} />
       <RecentOrders orders={orders} />
-      <OrderHistory />
+      <OrderHistory orders={orders} />
     </div>
   );
 };
