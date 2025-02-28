@@ -21,9 +21,9 @@ function App() {
 
   return (
     <Router>
-      <div className={`flex ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
+      <div className={`flex  ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
         <Sidebar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <main className="flex-1 p-5">
+        <main className="flex-1 pl-5 pr-5">
           <Routes>
             {/* Pass darkMode and setDarkMode to Dashboard */}
             <Route path="/" element={<Dashboard darkMode={darkMode} setDarkMode={setDarkMode} />} />
