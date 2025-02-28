@@ -5,9 +5,12 @@ function OrderForm({ onOrderSubmit }) {
     customerName: "",
     address: "",
     distance: "",
+    restaurant: "", // New field for restaurant selection
   });
 
   const [errors, setErrors] = useState({});
+
+  const restaurants = ["Pizza Hut", "KFC", "McDonald's", "Subway", "Domino's"];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,6 +41,10 @@ function OrderForm({ onOrderSubmit }) {
       newErrors.distance = "Distance must be greater than 0.";
     }
 
+    if (!formData.restaurant) {
+      newErrors.restaurant = "Please select a restaurant.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Returns true if no errors
   };
@@ -45,7 +52,7 @@ function OrderForm({ onOrderSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return; // Stop submission if validation fails
+    if (!validateForm()) return;
 
     const estimatedTime = calculateDeliveryTime(formData.distance);
 
@@ -55,7 +62,7 @@ function OrderForm({ onOrderSubmit }) {
       status: "In Progress",
     });
 
-    setFormData({ customerName: "", address: "", distance: "" }); // Reset form after submission
+    setFormData({ customerName: "", address: "", distance: "", restaurant: "" });
     setErrors({});
   };
 
@@ -102,6 +109,25 @@ function OrderForm({ onOrderSubmit }) {
           />
           {errors.distance && (
             <p className="text-red-500 text-sm">{errors.distance}</p>
+          )}
+        </div>
+
+        <div>
+          <select
+            name="restaurant"
+            value={formData.restaurant}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
+            <option value="">Select a Restaurant</option>
+            {restaurants.map((restaurant, index) => (
+              <option key={index} value={restaurant}>
+                {restaurant}
+              </option>
+            ))}
+          </select>
+          {errors.restaurant && (
+            <p className="text-red-500 text-sm">{errors.restaurant}</p>
           )}
         </div>
 
