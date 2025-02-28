@@ -8,14 +8,16 @@ import RewardsActions from "../components/RewardsActions";
 function Dashboard() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedPage, setSelectedPage] = useState("Dashboard"); // ✅ Added this
 
   const handleNewOrder = (newOrder) => {
     setOrders([...orders, newOrder]);
     setSelectedOrder(newOrder);
   };
+
   return (
     <div className="p-5 space-y-5">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <h1 className="text-2xl font-bold">{selectedPage}</h1> {/* ✅ No error now */}
       <RewardsActions />
       <OrderForm onOrderSubmit={handleNewOrder} />
       <OrderBreakdown order={selectedOrder} />
@@ -23,6 +25,6 @@ function Dashboard() {
       <OrderHistory orders={orders} />
     </div>
   );
-};
+}
 
 export default Dashboard;
