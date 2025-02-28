@@ -8,7 +8,7 @@ import RewardsActions from "../components/RewardsActions";
 function Dashboard() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedPage, setSelectedPage] = useState("Dashboard"); 
+  const [selectedPage, setSelectedPage] = useState("Dashboard");
 
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem("orders"));
@@ -28,7 +28,13 @@ function Dashboard() {
     setOrders([...orders, newOrder]);
     setSelectedOrder(newOrder);
   };
-  
+
+  const clearOrderHistory = () => {
+    localStorage.removeItem("orders"); // Remove orders from Local Storage
+    setOrders([]); // Clear state
+    setSelectedOrder(null); // Reset selected order
+  };
+
   const handleUpdateStatus = (index, newStatus) => {
     const updatedOrders = orders.map((order, i) =>
       i === index ? { ...order, status: newStatus } : order
@@ -38,12 +44,18 @@ function Dashboard() {
 
   return (
     <div className="p-5 space-y-5">
-      <h1 className="text-2xl font-bold">{selectedPage}</h1> 
+      <h1 className="text-2xl font-bold">{selectedPage}</h1>
       <RewardsActions />
       <OrderForm onOrderSubmit={handleNewOrder} />
       <OrderBreakdown order={selectedOrder} />
       <RecentOrders orders={orders} onUpdateStatus={handleUpdateStatus} />
       <OrderHistory orders={orders} />
+      <button
+        onClick={clearOrderHistory}
+        className="bg-red-500 text-white px-4 py-2 rounded"
+      >
+        Clear Order History
+      </button>
     </div>
   );
 }
