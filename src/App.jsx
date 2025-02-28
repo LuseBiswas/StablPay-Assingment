@@ -1,18 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Sidebar from './components/Sidebar';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1 className="text-3xl font-bold underline text-red-700">
-      Hello world!
-    </h1>
-    </>
-  )
-}
-
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 p-5">
+        <Dashboard />
+      </main>
+    </div>
+  );
+};
 export default App
