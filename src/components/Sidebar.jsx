@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Home, Star, ClipboardList, Settings, LogOut, Sun, Moon, Menu, X } from "lucide-react";
+import { Home, Star, ClipboardList, Settings, LogOut, Sun, Moon } from "lucide-react";
 
 function Sidebar({ darkMode, setDarkMode }) {
   const [active, setActive] = useState("Home");
@@ -8,13 +8,12 @@ function Sidebar({ darkMode, setDarkMode }) {
   const sidebarRef = useRef(null);
 
   const menuItems = [
-    { name: "Home", icon: <Home size={20}/>, disabled: false},
+    { name: "Home", icon: <Home size={20} />, disabled: false },
     { name: "Favorites", icon: <Star size={20} />, disabled: true },
     { name: "Orders", icon: <ClipboardList size={20} />, disabled: true },
     { name: "Settings", icon: <Settings size={20} />, disabled: true },
   ];
 
-  // Update isMobile state on window resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -25,7 +24,6 @@ function Sidebar({ darkMode, setDarkMode }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Add effect to handle clicks outside sidebar
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -44,10 +42,39 @@ function Sidebar({ darkMode, setDarkMode }) {
     };
   }, [isOpen, isMobile]);
 
+  // Switch Toggle Component
+  const ThemeSwitch = ({ isMobileView = false }) => (
+    <div
+      className={`flex items-center ${isMobileView ? "justify-center" : "space-x-3"}`}
+      onClick={() => setDarkMode(!darkMode)}
+    >
+      <div
+        className={`relative w-14 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
+          darkMode ? "bg-gray-700" : "bg-gray-300"
+        }`}
+      >
+        <div
+          className={`absolute w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center ${
+            darkMode ? "translate-x-7" : "translate-x-0"
+          }`}
+        >
+          {darkMode ? (
+            <Moon size={14} className="text-gray-800" />
+          ) : (
+            <Sun size={14} className="text-yellow-500" />
+          )}
+        </div>
+      </div>
+      {!isMobileView && (
+        <span className="text-sm">{darkMode ? "Dark" : "Light"}</span>
+      )}
+    </div>
+  );
+
   return (
     <>
       {/* Mobile Header Bar */}
-      <div className={`fixed top-0 left-0 w-full z-40 md:hidden flex items-center justify-between p-4 ${darkMode ? "bg-gray-900 text-white" : "bg-white shadow-sm"}`}>
+      <div className={`fixed top-0 left-0 w-full z-40 md:hidden flex items-center justify-between p-4 ${darkMode ? "bg-gray-900 text-white" : "bg-white shadow-sm"}15`}>
         <button
           className="flex items-center justify-center focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
@@ -62,16 +89,9 @@ function Sidebar({ darkMode, setDarkMode }) {
         
         <h2 className="text-xl font-bold text-indigo-600">StaplEat</h2>
         
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="flex items-center justify-center p-2 rounded-full"
-          aria-label="Toggle dark mode"
-        >
-          {darkMode ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} className="text-indigo-600" />}
-        </button>
+        <ThemeSwitch isMobileView={true} />
       </div>
 
-      {/* Sidebar */}
       <div
         ref={sidebarRef}
         className={`fixed md:static w-64 h-full flex flex-col justify-between transition-all duration-300 ease-in-out z-50 
@@ -87,13 +107,15 @@ function Sidebar({ darkMode, setDarkMode }) {
             {menuItems.map((item) => (
               <li
                 key={item.name}
-                className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all 
-                ${item.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
-                ${active === item.name ? (darkMode ? "bg-gray-800 text-indigo-400" : "bg-indigo-100 text-indigo-600") : ""} 
-                ${darkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"}`}
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-all 
+                ${item.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"} 
+                ${active === item.name && !item.disabled ? (darkMode ? "bg-gray-800 text-indigo-400" : "bg-indigo-100 text-indigo-600") : ""} 
+                ${!item.disabled && (darkMode ? "hover:bg-gray-800" : "hover:bg-gray-100")}`}
                 onClick={() => {
-                  setActive(item.name);
-                  if (isMobile) setIsOpen(false);
+                  if (!item.disabled) {
+                    setActive(item.name);
+                    if (isMobile) setIsOpen(false);
+                  }
                 }}
               >
                 {item.icon}
@@ -102,18 +124,11 @@ function Sidebar({ darkMode, setDarkMode }) {
             ))}
           </ul>
 
-          {/* Theme Toggle Button for Desktop view only */}
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className={`mt-6 hidden md:flex items-center space-x-2 px-4 py-2 rounded-lg w-full transition-all 
-            ${darkMode ? "bg-yellow-500 text-gray-900" : "bg-indigo-600 text-white"}`}
-          >
-            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
-          </button>
+          <div className="mt-6 hidden md:flex">
+            <ThemeSwitch isMobileView={false} />
+          </div>
         </div>
 
-        {/* Log Out Button at Bottom */}
         <div className="p-5 mt-auto">
           <div 
             className="flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -124,7 +139,6 @@ function Sidebar({ darkMode, setDarkMode }) {
         </div>
       </div>
 
-      {/* Overlay funtions for mobile experience */}
       {isOpen && isMobile && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
