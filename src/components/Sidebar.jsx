@@ -8,10 +8,10 @@ function Sidebar({ darkMode, setDarkMode }) {
   const sidebarRef = useRef(null);
 
   const menuItems = [
-    { name: "Home", icon: <Home size={20} /> },
-    { name: "Favorites", icon: <Star size={20} /> },
-    { name: "Orders", icon: <ClipboardList size={20} /> },
-    { name: "Settings", icon: <Settings size={20} /> },
+    { name: "Home", icon: <Home size={20}/>, disabled: false},
+    { name: "Favorites", icon: <Star size={20} />, disabled: true },
+    { name: "Orders", icon: <ClipboardList size={20} />, disabled: true },
+    { name: "Settings", icon: <Settings size={20} />, disabled: true },
   ];
 
   // Update isMobile state on window resize
@@ -88,6 +88,7 @@ function Sidebar({ darkMode, setDarkMode }) {
               <li
                 key={item.name}
                 className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all 
+                ${item.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                 ${active === item.name ? (darkMode ? "bg-gray-800 text-indigo-400" : "bg-indigo-100 text-indigo-600") : ""} 
                 ${darkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"}`}
                 onClick={() => {
