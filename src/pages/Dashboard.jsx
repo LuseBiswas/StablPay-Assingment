@@ -52,9 +52,9 @@ function Dashboard({ darkMode }) {
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
-      <div className="p-5 space-y-5 max-h-screen overflow-y-auto">
+      <div className="p-3 md:p-5 space-y-4 md:space-y-5 max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">{selectedPage}</h1>
+          <h1 className="text-xl md:text-2xl font-bold">{selectedPage}</h1>
         </div>
 
         <RewardsActions darkMode={darkMode} onOrderSubmit={handleNewOrder} />
