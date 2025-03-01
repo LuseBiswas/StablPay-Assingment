@@ -6,9 +6,9 @@ function RewardsActions({ darkMode, onOrderSubmit }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOrderSubmit = (orderData) => {
-        onOrderSubmit(orderData); // Pass the order data up to Dashboard
-        setIsModalOpen(false); // Close the modal
-        setRewardPoints(prev => prev - 50); // Deduct some points for the order
+        onOrderSubmit(orderData); 
+        setIsModalOpen(false); 
+        setRewardPoints(prev => prev - 50); 
     };
 
     return (

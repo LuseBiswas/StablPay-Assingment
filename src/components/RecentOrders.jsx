@@ -13,7 +13,7 @@ function RecentOrders({ orders, onUpdateStatus, darkMode }) {
   const statusOptions = ['Pending', 'In Progress', 'Delivered'];
   const [expandedOrderId, setExpandedOrderId] = useState(null);
 
-  // Status color mapping
+
   const getStatusStyles = (status) => {
     switch (status) {
       case 'Pending':

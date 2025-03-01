@@ -114,7 +114,6 @@ function OrderForm({ onOrderSubmit, darkMode }) {
     <div className={`shadow-lg rounded-lg p-6 transition-all ${
       darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
     }`}>
-      <h2 className="text-xl font-bold mb-5">Place an Order</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="customerName" className={labelClasses}>
@@ -228,7 +227,6 @@ function OrderForm({ onOrderSubmit, darkMode }) {
           </div>
         </div>
         
-        {/* Delivery Breakdown Preview */}
         {previewOrder && (
           <div className={`mt-4 p-4 rounded-lg transition-all ${
             darkMode ? "bg-gray-700" : "bg-gray-100"

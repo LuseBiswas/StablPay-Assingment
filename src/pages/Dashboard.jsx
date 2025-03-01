@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import RewardsActions from "../components/RewardsActions";
 import OrderBreakdown from "../components/OrderBreakdown";
 import RecentOrders from "../components/RecentOrders";
@@ -9,8 +8,8 @@ import Sidebar from "../components/Sidebar";
 function Dashboard({ darkMode, setDarkMode }) {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedPage, setSelectedPage] = useState("Dashboard");
 
+  //Fetching from Local Storage of Previous Orders
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
     setOrders(savedOrders);
@@ -61,7 +60,7 @@ function Dashboard({ darkMode, setDarkMode }) {
       >
         <div className="p-3 md:p-5 space-y-4 md:space-y-5 max-h-screen overflow-y-auto">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl md:text-2xl font-bold">{selectedPage}</h1>
+            <h1 className="text-xl md:text-2xl font-bold">Dashboard</h1>
           </div>
 
           <RewardsActions darkMode={darkMode} onOrderSubmit={handleNewOrder} />
